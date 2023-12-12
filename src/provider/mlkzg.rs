@@ -179,12 +179,12 @@ where
                           transcript: &mut <NE as NovaEngine>::TE|
      -> (Vec<E::G1Affine>, Vec<Vec<E::Fr>>) {
       let poly_eval = |f: &[E::Fr], u: E::Fr| -> E::Fr {
-        let mut v = f[0];
-        let mut u_power = E::Fr::ONE;
+        // Horner's scheme
+        let mut v = f[f.len() - 1];
 
-        for fi in f.iter().skip(1) {
-          u_power *= u;
-          v += u_power * fi;
+        for fi in f.iter().rev().skip(1) {
+          v *= u;
+          v += fi;
         }
 
         v
